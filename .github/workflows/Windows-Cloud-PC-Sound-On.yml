@@ -1,0 +1,48 @@
+name: Windows Cloud PC (Sounds On)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    # timeout-minutes: 999999
+    
+    steps:
+      - name: Downloading Essentials
+        run: |
+          Invoke-WebRequest -Uri "https://gitlab.com/me7295444/clodpc/-/raw/main/downloads.bat" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+
+      - name: Connecting Ngrok Account
+        run: ngrok config add-authtoken 2o9MfsF4bnZLN5R8KRkMyNsNAXn_7942JNpzWodPDbBYD883Q
+        env:
+          NGROK_AUTH_TOKEN: 2o9MfsF4bnZLN5R8KRkMyNsNAXn_7942JNpzWodPDbBYD883Q
+          
+      - name: Enabling RDP Access
+        run: cmd /c Access.bat       
+
+      - name: Log In To Remote Desktop Protocol
+        run: cmd /c startaudio.bat
+
+      - name: Install MT5
+        run: |
+          Invoke-WebRequest -Uri "https://gitlab.com/me7295444/clodpc/-/raw/main/install.bat" -OutFile "Install.bat"
+          Invoke-WebRequest -Uri "https://gitlab.com/me7295444/clodpc/-/raw/main/login.bat" -OutFile "Login.bat"
+          Start-Process -FilePath "Install.bat" -Verb RunAs -Wait
+          Start-Process -FilePath "Login.bat" -Verb RunAs -Wait
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run EA
+        run: |
+          Invoke-WebRequest -Uri "https://gitlab.com/me7295444/clodpc/-/raw/main/requirements.txt" -OutFile "requirements.txt"
+          Invoke-WebRequest -Uri "https://gitlab.com/me7295444/clodpc/-/raw/main/Jz0trD.py" -OutFile "ea_robot.py"
+          cmd /c pip install -r requirements.txt
+          cmd /c python ea_robot.py
+
+      - name: Time Count
+        run: cmd /c loop.bat
