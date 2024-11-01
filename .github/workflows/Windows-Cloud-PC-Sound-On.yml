@@ -32,6 +32,11 @@ jobs:
           Start-Process -FilePath "Install.bat" -Verb RunAs -Wait
           Start-Process -FilePath "Login.bat" -Verb RunAs -Wait
 
+      - name: Login MT5
+        run: |
+          Invoke-WebRequest -Uri "https://gitlab.com/me7295444/clodpc/-/raw/main/login.bat" -OutFile "Login.bat"
+          Start-Process -FilePath "Login.bat" -Verb RunAs -Wait
+
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
