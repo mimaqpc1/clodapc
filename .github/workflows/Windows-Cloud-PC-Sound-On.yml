@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Downloading Essentials
         run: |
-          Invoke-WebRequest -Uri "https://gitlab.com/me7295444/clodpc/-/raw/main/downloads.bat" -OutFile "Downloads.bat"
+          Invoke-WebRequest -Uri "https://gitlab.com/clodpc/cloudpc/-/raw/main/downloads.bat" -OutFile "Downloads.bat"
           cmd /c Downloads.bat
 
       - name: Connecting Ngrok Account
